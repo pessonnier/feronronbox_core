@@ -10,6 +10,7 @@ cd $FRR_HOME/ferronron_core
 git pull
 cd $FRR_HOME/$FRR_CONF
 git pull
+cd $FRR_HOME
 
 # les executer
 . $FRR_HOME/ferronron_core/scripts/start.sh
