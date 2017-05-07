@@ -1,6 +1,7 @@
 import csv
 import youtube_dl
 
+print("téléchargement youtube")
 with open('./ferronron_squelette/liste_youtube.csv','r') as y:
   c = csv.reader(y,delimiter=',')
   for l in c:
