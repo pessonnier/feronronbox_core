@@ -1,2 +1,2 @@
 # rien
-echo init
+echo "initialisation"
