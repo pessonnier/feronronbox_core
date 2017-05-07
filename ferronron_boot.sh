@@ -1,11 +1,15 @@
 # mettre à jour les scriptes
-cd /home/pi
+export FRR_HOME=/home/pi
+export FRR_CONF=ferronron_squelette
+
+cd $FRR_HOME
 git clone https://github.com/pessonnier/ferronron_core.git
-git clone https://github.com/pessonnier/ferronron_squelette.git
-cd /home/pi/ferronron_core
+git clone https://github.com/pessonnier/$FRR_CONF.git
+cd $FRR_HOME/ferronron_core
 git pull
-cd /home/pi/ferronron_squelette
+cd $FRR_HOME/$FRR_CONF
 git pull
 
 # les executer
-./ferronron_core/scripts/start.sh
+chmod +x $FRR_HOME/ferronron_core/scripts/start.sh
+$FRR_HOME/ferronron_core/scripts/start.sh
