@@ -1,1 +1,2 @@
 # rien
+print("interrupteurs")
