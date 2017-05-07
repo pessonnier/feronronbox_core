@@ -12,5 +12,4 @@ cd $FRR_HOME/$FRR_CONF
 git pull
 
 # les executer
-chmod +x $FRR_HOME/ferronron_core/scripts/start.sh
-$FRR_HOME/ferronron_core/scripts/start.sh
+. $FRR_HOME/ferronron_core/scripts/start.sh
