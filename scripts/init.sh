@@ -1,1 +1,2 @@
 # rien
+echo init
