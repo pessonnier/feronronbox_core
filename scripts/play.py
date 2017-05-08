@@ -19,4 +19,5 @@ with open(path+'/playliste1.csv','r') as play:
       time.sleep(5)
       print('cmd quit\n')
       p.stdin.write(b"quit\n")
+      p.stdin.flush()
       p.wait()
