@@ -1,6 +1,8 @@
 echo alu
-
-. $FRR_HOME/ferronron_core/scripts/miseajour.sh
+echo "***************"
+date
+echo "***************"
+su -l pi -c $FRR_HOME/ferronron_core/scripts/miseajour.sh
 . $FRR_HOME/ferronron_core/scripts/init.sh
 python3 $FRR_HOME/ferronron_core/scripts/interrupteurs.py &
 python3 $FRR_HOME/ferronron_core/scripts/play.py &
