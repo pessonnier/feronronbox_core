@@ -16,7 +16,7 @@ with open(path+'/playliste1.csv','r') as play:
   for l in c:
     if l[0]!='nom du fichier': 
       p=subprocess.Popen(['mplayer', '-slave', '-quiet', '-vo', 'sdl', path+'/media/'+l[0]],stdin=subprocess.PIPE)
-      time.sleep(10)
+      time.sleep(15)
       print('cmd quit\n')
       p.stdin.write(b"quit\n")
       p.stdin.flush()
