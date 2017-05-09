@@ -1,4 +1,7 @@
 # rien
+echo "****************"
+date
+echo "****************"
 echo "initialisation"
 ping -c 1 google.com
 if [ $? ]
