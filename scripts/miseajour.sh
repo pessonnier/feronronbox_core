@@ -1,5 +1,5 @@
 echo "mise à jour"
-
+echo $FRR_HOME
 cd $FRR_HOME
 git clone https://github.com/pessonnier/ferronron_core.git
 git clone https://github.com/pessonnier/$FRR_CONF.git
