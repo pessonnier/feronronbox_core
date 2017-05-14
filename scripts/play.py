@@ -22,9 +22,9 @@ with open(path+'/playliste1.csv','r') as play:
   for l in c:
     if l[0]!='nom du fichier': 
       mpcmd(p,'loadfile '+ path+'/media/'+l[0])
-      time.sleep(15)
-      mpcmd(p,'pause')
-      time.sleep(1)      
-      mpcmd(p,'pause')
+      time.sleep(10)
+      #mpcmd(p,'pause')
+      #time.sleep(1)      
+      #mpcmd(p,'pause')
       #p.wait()
 mpcmd(p,'quit')
