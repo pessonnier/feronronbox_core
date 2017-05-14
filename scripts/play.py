@@ -27,3 +27,4 @@ with open(path+'/playliste1.csv','r') as play:
       time.sleep(1)      
       mpcmd(p,'pause')
       #p.wait()
+mpcmd(p,'quit')
