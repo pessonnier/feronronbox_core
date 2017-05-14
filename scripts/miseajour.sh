@@ -16,4 +16,3 @@ git pull
 cd $FRR_HOME/$FRR_CONF
 git pull
 cd $FRR_HOME
-echo "fin init"
