@@ -21,11 +21,11 @@ with open(path+'/playliste1.csv','r') as play:
   c = csv.reader(play,delimiter=',')
   for l in c:
     if l[0]!='nom du fichier': 
-      mpcmd(p,b'loading '+ path+'/media/'+l[0])
+      mpcmd(p,b'loadfile '+ path+'/media/'+l[0])
       time.sleep(15)
       mpcmd(p,b'pause')
       time.sleep(1)      
-      mpcmd(p,b'play')
+      mpcmd(p,b'pause')
       #print('cmd quit\n')
       #p.stdin.write(b"quit\n")
       #p.stdin.flush()
