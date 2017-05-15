@@ -1,3 +1,4 @@
+sudo initreseau.sh
 echo "mise à jour"
 echo $FRR_HOME
 cd $FRR_HOME
