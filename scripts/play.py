@@ -5,10 +5,14 @@ import csv
 import subprocess
 import os
 import time
+import RPi.GPIO as gpio
 
 os.putenv('SDL_FBDEV', '/dev/fb1')
 os.putenv('SDL_VIDEODRIVER', 'fbcon')
 os.putenv('SDL_NOMOUSE', '1')
+
+gpio.setmode(gpio.BCM)
+gpio.setup(18,gpio.IN)
 
 def mpcmd(p,cmd):
   print(cmd+'\n')
@@ -22,9 +26,15 @@ with open(path+'/playliste1.csv','r') as play:
   for l in c:
     if l[0]!='nom du fichier': 
       mpcmd(p,'loadfile '+ path+'/media/'+l[0])
-      time.sleep(10)
+      while gpio.input(18)==1:
+        pass
+      for i in range(100):
+        time.sleep(0.1)
+        if gpio.input(18)==1:
+          break
       #mpcmd(p,'pause')
       #time.sleep(1)      
       #mpcmd(p,'pause')
       #p.wait()
 mpcmd(p,'quit')
+exit()
