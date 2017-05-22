@@ -13,6 +13,8 @@ os.putenv('SDL_NOMOUSE', '1')
 
 gpio.setmode(gpio.BCM)
 gpio.setup(18,gpio.IN)
+gpio.setup(17,gpio.IN)
+gpio.setup(27,gpio.IN)
 
 def mpcmd(p,cmd):
   print(cmd+'\n')
@@ -26,15 +28,31 @@ with open(path+'/playliste1.csv','r') as play:
   for l in c:
     if l[0]!='nom du fichier': 
       mpcmd(p,'loadfile '+ path+'/media/'+l[0])
-      while gpio.input(18)==1:
-        pass
+
+      #mode boucle
+      if gpio.input(17)==1:
+        while gpio.input(17)==1:
+          time.sleep(1)
+
+      #mode debug lecture pendant 10s max
+      if gpio.input(27)==1:
       for i in range(100):
         time.sleep(0.1)
         if gpio.input(18)==1:
+          p.kill()
+          subprocess.call(["pkill","fbi"])
+          subprocess.call(["halt"])
+          exit()
+
+      #mode duree fixe
+      if (gpio.input(17)==0) and (gpio.input(27)==0):
+      for i in range(l[2]*10):
+        time.sleep(0.1)
+        if gpio.input(18)==1:
+          time.sleep(0.05)
+          while gpio.input(18)==1:
+            time.sleep(0.1)
           break
-      #mpcmd(p,'pause')
-      #time.sleep(1)      
-      #mpcmd(p,'pause')
-      #p.wait()
+
 mpcmd(p,'quit')
 exit()
