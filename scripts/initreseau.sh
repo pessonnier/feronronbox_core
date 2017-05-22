@@ -8,7 +8,7 @@ do
     break 
   else
     echo "réseau inaccessible, maj de la conf"
-    cp $FRR_HOME/$FRR_CONF/wpa /etc/wpa_supplicant/wpa_supplicant.con
+    cp $FRR_HOME/$FRR_CONF/wpa /etc/wpa_supplicant/wpa_supplicant.conf
     sudo wpa_cli reconfigure
     sleep 3
     #ajouter une image pour informer
