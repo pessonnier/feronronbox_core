@@ -7,6 +7,8 @@ import os
 import time
 import RPi.GPIO as gpio
 
+# lire une variable avec le peripherique audio et video
+path=os.environ["FRR_HOME"]+'/'+os.environ["FRR_CONF"]
 os.putenv('SDL_FBDEV', '/dev/fb1')
 os.putenv('SDL_VIDEODRIVER', 'fbcon')
 os.putenv('SDL_NOMOUSE', '1')
@@ -32,50 +34,64 @@ def mpcmd(p,cmd):
   p.stdin.write(cmd+'\n')
   p.stdin.flush()
 
-path=os.environ["FRR_HOME"]+'/'+os.environ["FRR_CONF"]
+def modeBoucle():
+  if gpio.input(17)==1:
+    if not loop:
+      mpcmd(p,'loop 10')
+      loop=True
+    time.sleep(1)
+    while gpio.input(17)==1:
+      time.sleep(0.1)
+      if gpio.input(18)==1:
+        break # passe à la video suivante
+    mpcmd(p,'loop -1')
+    loop=False
+
+loop=False
+
 while 1:
   # lecture sur la carte audio USB
-  # p=subprocess.Popen(['mplayer', '-ao', 'alsa:device=hw=1.0', '-slave', '-quiet', '-vo', 'sdl', path+'/media/metronome.mp4'],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
-  p=subprocess.Popen(['mplayer', '-slave', '-quiet', '-vo', 'sdl', path+'/media/metronome.mp4'],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
+  # p=subprocess.Popen(['mplayer', '-ao', 'alsa:device=hw=1.0', '-slave', '-quiet', '-idle', '-vo', 'sdl', path+'/media/metronome.mp4'],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
+  p=subprocess.Popen(['mplayer', '-slave', '-quiet', '-idle', '-vo', 'sdl', path+'/media/metronome.mp4'],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
   with open(path+'/playliste1.csv','r') as play:
     c = csv.reader(play,delimiter=',')
     for l in c:
-      if l[0]!='nom du fichier': 
+      if l[0]!='nom du fichier':
         if p.poll()==:
           mpcmd(p,'loadfile '+ path+'/media/'+l[0])
         else
-          p=subprocess.Popen(['mplayer', '-slave', '-quiet', '-vo', 'sdl', path+'/media/'+l[0]],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
+          p=subprocess.Popen(['mplayer', '-slave', '-quiet', '-idle', '-vo', 'sdl', path+'/media/'+l[0]],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
 
-        #mode boucle
-        if gpio.input(17)==1:
-          mpcmd(p,'loop 0')
-          time.sleep(1)
-          while gpio.input(17)==1:
-            time.sleep(0.1)
-            if gpio.input(18)==1:
-              break
-          mpcmd(p,'loop -1')
+        modeBoucle()
 
-        #mode debug lecture pendant 10s max
+        # mode debug lecture pendant 10s max
         if gpio.input(27)==1:
           for i in range(100):
             time.sleep(0.1)
-            if gpio.input(18)==1:
+            if gpio.input(18)==1: # arreter le pi
               p.kill()
               subprocess.call(["sudo", "pkill", "fbi"])
               time.sleep(1)
               subprocess.call(["sudo", "halt"])
               exit()
 
-        #mode duree fixe
+        # mode lecture normale
         if (gpio.input(17)==0) and (gpio.input(27)==0):
-          for i in range(int(l[2])*10):
+          duree=15 #int(l[2])
+          for i in range(duree*10):
             time.sleep(0.1)
             if gpio.input(18)==1:
               time.sleep(0.05)
               while gpio.input(18)==1:
                 time.sleep(0.1)
-              break
-
+              break # passe à la video suivante
+            if gpio.input(17)==1: # passer en mode boucle
+              if not loop:
+                mpcmd(p,'loop 10')
+                loop=True
+                break
+        
+        modeBoucle() # rentrer dans le mode boucle si l'on sort mode normal en basculant à droite
+              
   mpcmd(p,'quit')
 exit()
