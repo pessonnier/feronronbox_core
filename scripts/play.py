@@ -18,6 +18,8 @@ gpio.setup(18,gpio.IN) # btt vert
 gpio.setup(17,gpio.IN) # droite
 gpio.setup(27,gpio.IN) # gauche
 
+PAUSE=1
+
 def mpcmdr(p,cmd):
   print(cmd+'\n')
   p.stdin.write(cmd+'\n')
@@ -66,8 +68,8 @@ while 1:
 
         # mode debug lecture pendant 10s max
         if gpio.input(27)==1:
-          for i in range(100):
-            time.sleep(0.1)
+          for i in range(10/PAUSE):
+            time.sleep(PAUSE)
             if gpio.input(18)==1: # arreter le pi
               p.kill()
               subprocess.call(["sudo", "pkill", "fbi"])
@@ -77,13 +79,13 @@ while 1:
 
         # mode lecture normale
         if (gpio.input(17)==0) and (gpio.input(27)==0):
-          duree=15 #int(l[2])
-          for i in range(duree*10):
-            time.sleep(0.1)
+          duree=int(l[2])
+          for i in range(duree/PAUSE):
+            time.sleep(PAUSE)
             if gpio.input(18)==1:
               time.sleep(0.05)
               while gpio.input(18)==1:
-                time.sleep(0.1)
+                time.sleep(PAUSE)
               break # passe à la video suivante
             if gpio.input(17)==1: # passer en mode boucle
               if not loop:
