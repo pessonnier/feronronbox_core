@@ -1,4 +1,5 @@
-# rien
+# lecture en boucle des videos
+# IHM à boutons
 print("lecture des videos")
 
 import csv
