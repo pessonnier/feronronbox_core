@@ -19,7 +19,7 @@ gpio.setup(18,gpio.IN) # btt vert
 gpio.setup(17,gpio.IN) # droite
 gpio.setup(27,gpio.IN) # gauche
 
-PAUSE=1
+PAUSE=0.2
 
 def mpcmdr(p,cmd):
   print(cmd+'\n')
@@ -70,7 +70,7 @@ while 1:
 
         # mode debug lecture pendant 10s max
         if gpio.input(27)==1:
-          for i in range(10/PAUSE):
+          for i in range(int(10/PAUSE)):
             time.sleep(PAUSE)
             if gpio.input(18)==1: # arreter le pi
               p.kill()
@@ -82,7 +82,7 @@ while 1:
         # mode lecture normale
         if (gpio.input(17)==0) and (gpio.input(27)==0):
           duree=int(l[2])
-          for i in range(duree/PAUSE):
+          for i in range(int(duree/PAUSE)):
             time.sleep(PAUSE)
             if gpio.input(18)==1:
               time.sleep(0.05)
