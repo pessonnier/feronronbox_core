@@ -34,7 +34,10 @@ def mpcmd(p,cmd):
   p.stdin.write(cmd+'\n')
   p.stdin.flush()
 
+loop=False
+
 def modeBoucle():
+  global loop
   if gpio.input(17)==1:
     if not loop:
       mpcmd(p,'loop 10')
@@ -47,8 +50,6 @@ def modeBoucle():
     mpcmd(p,'loop -1')
     loop=False
 
-loop=False
-
 while 1:
   # lecture sur la carte audio USB
   # p=subprocess.Popen(['mplayer', '-ao', 'alsa:device=hw=1.0', '-slave', '-quiet', '-idle', '-vo', 'sdl', path+'/media/metronome.mp4'],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
@@ -57,9 +58,9 @@ while 1:
     c = csv.reader(play,delimiter=',')
     for l in c:
       if l[0]!='nom du fichier':
-        if p.poll()==:
+        if p.poll()==None:
           mpcmd(p,'loadfile '+ path+'/media/'+l[0])
-        else
+        else:
           p=subprocess.Popen(['mplayer', '-slave', '-quiet', '-idle', '-vo', 'sdl', path+'/media/'+l[0]],stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
 
         modeBoucle()
